@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fluxo — Inscrições de projetos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FAFAF8;
+    --surface:#FFFFFF;
+    --border:#E6E3DC;
+    --border-strong:#D8D4CA;
+    --ink:#17161B;
+    --muted:#726F68;
+    --muted-2:#9B978E;
+    --pink:#FF2E7E;
+    --pink-deep:#E0125C;
+    --pink-soft:#FFE7F0;
+    --danger:#C63B2E;
+    --radius:12px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  .serif{font-family:'Fraunces',serif;}
+
+  /* ---------- HEADER ---------- */
+  header{
+    max-width:720px;
+    margin:0 auto;
+    padding:64px 24px 48px;
+  }
+  .eyebrow{
+    font-size:12.5px;
+    letter-spacing:0.09em;
+    color:var(--muted);
+    margin:0 0 18px;
+    font-weight:500;
+  }
+  .title-wrap{
+    position:relative;
+    display:inline-block;
+    margin-bottom:22px;
+  }
+  h1{
+    font-size:clamp(48px,9vw,84px);
+    font-weight:600;
+    margin:0;
+    line-height:0.95;
+    letter-spacing:-0.02em;
+  }
+  .title-wrap svg{
+    position:absolute;
+    left:2px;
+    bottom:-6px;
+    width:78%;
+    height:auto;
+  }
+  .tagline{
+    font-family:'Fraunces',serif;
+    font-style:italic;
+    font-weight:400;
+    font-size:clamp(19px,2.6vw,23px);
+    color:var(--ink);
+    margin:0 0 14px;
+    max-width:40ch;
+  }
+  .instruction{
+    font-size:15px;
+    color:var(--muted);
+    margin:0 0 26px;
+    max-width:48ch;
+  }
+  .pill{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    padding:8px 16px;
+    border:1px solid var(--border-strong);
+    border-radius:999px;
+    font-size:13px;
+    font-weight:500;
+    color:var(--ink);
+    background:var(--surface);
+  }
+  .pill::before{
+    content:"";
+    width:7px;height:7px;
+    border-radius:50%;
+    background:var(--pink);
+  }
+
+  /* ---------- LAYOUT ---------- */
+  main{
+    max-width:720px;
+    margin:0 auto;
+    padding:0 24px 100px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:32px;
+    margin-bottom:24px;
+    transition:box-shadow .2s ease, border-color .2s ease, transform .2s ease;
+  }
+  .card:hover{
+    box-shadow:0 8px 28px -14px rgba(23,22,27,0.16);
+    border-color:var(--border-strong);
+  }
+  .section-num{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:24px;
+  }
+  .section-num span.n{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:14px;
+    width:28px;height:28px;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    background:var(--pink-soft);
+    color:var(--pink-deep);
+  }
+  .section-num h2{
+    font-size:19px;
+    font-weight:600;
+    margin:0;
+    letter-spacing:-0.01em;
+  }
+  .field{margin-bottom:20px;}
+  .field:last-child{margin-bottom:0;}
+  label{
+    display:block;
+    font-weight:500;
+    font-size:13.5px;
+    margin-bottom:7px;
+    color:var(--ink);
+  }
+  label .opt{font-weight:400;color:var(--muted-2);font-size:12.5px;}
+  input[type=text],
+  input[type=tel],
+  select,
+  textarea{
+    width:100%;
+    padding:12px 14px;
+    border:1.5px solid var(--border);
+    border-radius:8px;
+    background:var(--bg);
+    font-family:inherit;
+    font-size:14.5px;
+    color:var(--ink);
+    transition:border-color .18s ease, background .18s ease, box-shadow .18s ease;
+  }
+  input:hover, select:hover, textarea:hover{border-color:var(--border-strong);}
+  input:focus, select:focus, textarea:focus{
+    outline:none;
+    border-color:var(--pink);
+    background:var(--surface);
+    box-shadow:0 0 0 3px var(--pink-soft);
+  }
+  input.dup-error, .member-input.dup-error{
+    border-color:var(--danger);
+    background:#FDF1EF;
+  }
+  textarea{resize:vertical;min-height:92px;}
+  .hint{font-size:12.5px;color:var(--muted-2);margin-top:6px;}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  @media(max-width:520px){.row2{grid-template-columns:1fr;}}
+
+  /* integrantes dinâmico */
+  .member-row{display:flex;gap:8px;margin-bottom:10px;}
+  .member-row input{flex:1;}
+  .member-row button{
+    flex-shrink:0;
+    width:40px;
+    border:1.5px solid var(--border);
+    border-radius:8px;
+    background:var(--surface);
+    cursor:pointer;
+    font-size:16px;
+    color:var(--muted);
+    transition:all .18s ease;
+  }
+  .member-row button:hover{background:var(--danger);color:#fff;border-color:var(--danger);transform:scale(1.04);}
+  .add-member{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    background:var(--surface);
+    border:1.5px dashed var(--border-strong);
+    border-radius:8px;
+    padding:10px 16px;
+    font-family:inherit;
+    font-weight:500;
+    font-size:13.5px;
+    cursor:pointer;
+    color:var(--ink);
+    transition:all .18s ease;
+  }
+  .add-member:hover{background:var(--pink-soft);border-color:var(--pink);color:var(--pink-deep);}
+  .member-count{display:inline-block;margin-left:2px;font-size:13px;color:var(--muted-2);font-weight:400;}
+
+  /* checkboxes equipamentos */
+  .check-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 16px;}
+  @media(max-width:520px){.check-grid{grid-template-columns:1fr;}}
+  .check-item{
+    display:flex;align-items:center;gap:10px;
+    font-size:14px;
+    padding:10px 12px;
+    border:1.5px solid var(--border);
+    border-radius:8px;
+    cursor:pointer;
+    transition:all .16s ease;
+  }
+  .check-item:hover{border-color:var(--pink);background:var(--pink-soft);}
+  .check-item input{width:16px;height:16px;accent-color:var(--pink);}
+
+  /* submit */
+  .submit-row{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:8px;}
+  button.submit{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:16px;
+    background:var(--pink);
+    color:#fff;
+    border:none;
+    border-radius:999px;
+    padding:15px 32px;
+    cursor:pointer;
+    transition:transform .16s ease, box-shadow .16s ease, background .16s ease;
+  }
+  button.submit:hover{background:var(--pink-deep);transform:translateY(-2px);box-shadow:0 10px 22px -10px rgba(224,18,92,0.55);}
+  button.submit:active{transform:translateY(0);}
+  .error-msg{color:var(--danger);font-size:13.5px;margin-top:14px;display:none;}
+
+  /* success screen */
+  .success{display:none;text-align:center;padding:56px 24px;}
+  .success .check{
+    width:60px;height:60px;border-radius:50%;
+    background:var(--pink-soft);color:var(--pink-deep);
+    font-size:28px;display:flex;align-items:center;justify-content:center;
+    margin:0 auto 22px;
+  }
+  .success h2{font-family:'Fraunces',serif;font-size:28px;margin:0 0 10px;font-weight:600;}
+  .success p{color:var(--muted);max-width:44ch;margin:0 auto 28px;}
+  .recap{
+    text-align:left;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:22px 24px;
+    max-width:480px;
+    margin:0 auto 28px;
+    font-size:14px;
+  }
+  .recap div{margin-bottom:7px;}
+  .recap b{display:inline-block;min-width:110px;color:var(--muted);font-weight:500;}
+  button.again{
+    background:var(--surface);
+    border:1.5px solid var(--border-strong);
+    border-radius:999px;
+    padding:12px 24px;
+    font-family:inherit;
+    font-weight:500;
+    font-size:14px;
+    cursor:pointer;
+    transition:all .18s ease;
+  }
+  button.again:hover{border-color:var(--pink);color:var(--pink-deep);background:var(--pink-soft);}
+</style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">INSCRIÇÕES DE PROJETOS</p>
+  <div class="title-wrap">
+    <h1 class="serif">Fluxo</h1>
+    <svg viewBox="0 0 300 18" preserveAspectRatio="none"><path d="M2 12 C 60 2, 240 2, 298 13" stroke="#FF2E7E" stroke-width="5" fill="none" stroke-linecap="round"/></svg>
+  </div>
+  <p class="tagline">O legado das culturas periféricas</p>
+  <p class="instruction">Preencha o formulário para a inscrição do seu projeto.</p>
+  <span class="pill">Infraestrutura 4º semestre</span>
+</header>
+
+<main>
+  <form id="projectForm" novalidate>
+
+    <div class="card">
+      <div class="section-num"><span class="n serif">01</span><h2>O projeto</h2></div>
+
+      <div class="field">
+        <label for="nome">Nome do projeto</label>
+        <input type="text" id="nome" required>
+      </div>
+
+      <div class="field">
+        <label for="semestre">Semestre</label>
+        <select id="semestre" required>
+          <option value="">Selecione</option>
+          <option>1º semestre</option>
+          <option>2º semestre</option>
+          <option>3º semestre</option>
+          <option>4º semestre</option>
+          <option>5º semestre</option>
+          <option>6º semestre</option>
+          <option>7º semestre</option>
+          <option>8º semestre ou mais</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="descricao">Descrição do projeto</label>
+        <textarea id="descricao" placeholder="Do que se trata, formato, tempo de duração etc." required></textarea>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-num"><span class="n serif">02</span><h2>Quem participa <span class="member-count" id="memberCount"></span></h2></div>
+
+      <div id="membersWrap"></div>
+      <button type="button" class="add-member" id="addMember">+ Adicionar integrante</button>
+      <p class="hint">Cada integrante deve ter um nome diferente dos demais.</p>
+    </div>
+
+    <div class="card">
+      <div class="section-num"><span class="n serif">03</span><h2>O que vocês precisam</h2></div>
+
+      <div class="field">
+        <label>Equipamentos <span class="opt">(marque o que for necessário)</span></label>
+        <div class="check-grid">
+          <label class="check-item"><input type="checkbox" value="Projetor"> Projetor</label>
+          <label class="check-item"><input type="checkbox" value="Caixa de som"> Caixa de som</label>
+          <label class="check-item"><input type="checkbox" value="Microfone"> Microfone</label>
+          <label class="check-item"><input type="checkbox" value="Tomada / energia"> Tomada / energia</label>
+          <label class="check-item"><input type="checkbox" value="Mesa / bancada"> Mesa / bancada</label>
+          <label class="check-item"><input type="checkbox" value="Sala escura"> Sala escura</label>
+          <label class="check-item"><input type="checkbox" value="Painel / parede para pendurar"> Painel / parede para pendurar</label>
+          <label class="check-item"><input type="checkbox" value="Internet / wi-fi"> Internet / wi-fi</label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="equipOutro">Outro equipamento <span class="opt">(opcional)</span></label>
+        <input type="text" id="equipOutro" placeholder="Descreva aqui se não estiver na lista acima">
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-num"><span class="n serif">04</span><h2>Contato responsável</h2></div>
+
+      <div class="row2">
+        <div class="field">
+          <label for="contatoNome">Nome</label>
+          <input type="text" id="contatoNome" required>
+        </div>
+        <div class="field">
+          <label for="contatoInfo">Telefone <span class="opt">(somente números)</span></label>
+          <input type="tel" id="contatoInfo" inputmode="numeric" placeholder="11999990000" required>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="obs">Observações <span class="opt">(opcional)</span></label>
+        <textarea id="obs" placeholder="Algo mais que a organização precise saber?"></textarea>
+      </div>
+    </div>
+
+    <div class="submit-row">
+      <button type="submit" class="submit">Enviar inscrição</button>
+      <span id="savingState" class="hint"></span>
+    </div>
+    <p class="error-msg" id="errorMsg">Preencha os campos obrigatórios antes de enviar.</p>
+  </form>
+
+  <div class="success" id="successScreen">
+    <div class="check">✓</div>
+    <h2 class="serif">Projeto recebido!</h2>
+    <p>A organização já tem os dados do seu projeto. Qualquer coisa, o contato informado será usado.</p>
+    <div class="recap" id="recapBox"></div>
+    <button class="again" id="againBtn">Inscrever outro projeto</button>
+  </div>
+</main>
+
+<script>
+const membersWrap = document.getElementById('membersWrap');
+const memberCount = document.getElementById('memberCount');
+
+function addMemberRow(value){
+  const row = document.createElement('div');
+  row.className = 'member-row';
+  row.innerHTML = `<input type="text" class="member-input" placeholder="Nome do integrante" value="${value ? value.replace(/"/g,'&quot;') : ''}">
+                    <button type="button" title="Remover">×</button>`;
+  row.querySelector('button').addEventListener('click', () => {
+    if (membersWrap.children.length > 1){
+      row.remove();
+      updateCount();
+      clearDupHighlights();
+    }
+  });
+  membersWrap.appendChild(row);
+  updateCount();
+}
+function updateCount(){
+  const filled = [...membersWrap.querySelectorAll('.member-input')].filter(i => i.value.trim() !== '').length;
+  memberCount.textContent = filled > 0 ? `(${filled} ${filled === 1 ? 'integrante' : 'integrantes'})` : '';
+}
+function clearDupHighlights(){
+  membersWrap.querySelectorAll('.member-input').forEach(i => i.classList.remove('dup-error'));
+}
+membersWrap.addEventListener('input', () => { updateCount(); clearDupHighlights(); });
+document.getElementById('addMember').addEventListener('click', () => addMemberRow());
+addMemberRow();
+
+// telefone: somente números
+const contatoInfo = document.getElementById('contatoInfo');
+contatoInfo.addEventListener('input', () => {
+  contatoInfo.value = contatoInfo.value.replace(/\D/g, '');
+});
+
+const form = document.getElementById('projectForm');
+const errorMsg = document.getElementById('errorMsg');
+const savingState = document.getElementById('savingState');
+
+function findDuplicateNames(){
+  const inputs = [...membersWrap.querySelectorAll('.member-input')];
+  const seen = new Map();
+  const dupInputs = [];
+  inputs.forEach(inp => {
+    const key = inp.value.trim().toLowerCase();
+    if (key === '') return;
+    if (seen.has(key)){
+      dupInputs.push(inp);
+      dupInputs.push(seen.get(key));
+    } else {
+      seen.set(key, inp);
+    }
+  });
+  return dupInputs;
+}
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  clearDupHighlights();
+
+  const nome = document.getElementById('nome').value.trim();
+  const semestre = document.getElementById('semestre').value;
+  const descricao = document.getElementById('descricao').value.trim();
+  const contatoNome = document.getElementById('contatoNome').value.trim();
+  const contatoInfoVal = contatoInfo.value.trim();
+  const integrantes = [...membersWrap.querySelectorAll('.member-input')]
+    .map(i => i.value.trim()).filter(v => v !== '');
+  const equipamentos = [...document.querySelectorAll('.check-item input:checked')].map(c => c.value);
+  const equipOutro = document.getElementById('equipOutro').value.trim();
+  const obs = document.getElementById('obs').value.trim();
+
+  const dupInputs = findDuplicateNames();
+  if (dupInputs.length > 0){
+    dupInputs.forEach(inp => inp.classList.add('dup-error'));
+    errorMsg.textContent = 'Há integrantes com o mesmo nome. Ajuste antes de enviar.';
+    errorMsg.style.display = 'block';
+    return;
+  }
+
+  if (!nome || !semestre || !descricao || !contatoNome || !contatoInfoVal || integrantes.length === 0){
+    errorMsg.textContent = 'Preencha os campos obrigatórios antes de enviar.';
+    errorMsg.style.display = 'block';
+    return;
+  }
+  if (!/^\d+$/.test(contatoInfoVal)){
+    errorMsg.textContent = 'O telefone deve conter somente números.';
+    errorMsg.style.display = 'block';
+    return;
+  }
+  errorMsg.style.display = 'none';
+
+  const submission = {
+    nome, semestre, descricao,
+    integrantes, qtdIntegrantes: integrantes.length,
+    equipamentos, equipOutro, contatoNome, contatoInfo: contatoInfoVal, obs,
+    enviadoEm: new Date().toISOString()
+  };
+
+  savingState.textContent = 'Enviando…';
+  try{
+    const key = `submission:${Date.now()}_${Math.random().toString(36).slice(2,8)}`;
+    await window.storage.set(key, JSON.stringify(submission), true);
+    savingState.textContent = '';
+    showSuccess(submission);
+  }catch(err){
+    console.error('Storage error', err);
+    savingState.textContent = '';
+    errorMsg.textContent = 'Não foi possível salvar agora. Tente novamente em instantes.';
+    errorMsg.style.display = 'block';
+  }
+});
+
+function showSuccess(s){
+  form.style.display = 'none';
+  document.getElementById('successScreen').style.display = 'block';
+  document.getElementById('recapBox').innerHTML = `
+    <div><b>Projeto</b> ${escapeHtml(s.nome)}</div>
+    <div><b>Semestre</b> ${escapeHtml(s.semestre)}</div>
+    <div><b>Integrantes</b> ${escapeHtml(s.integrantes.join(', '))}</div>
+    <div><b>Contato</b> ${escapeHtml(s.contatoNome)} — ${escapeHtml(s.contatoInfo)}</div>
+  `;
+}
+
+document.getElementById('againBtn').addEventListener('click', () => {
+  form.reset();
+  membersWrap.innerHTML = '';
+  addMemberRow();
+  document.getElementById('successScreen').style.display = 'none';
+  form.style.display = 'block';
+  window.scrollTo({top:0, behavior:'smooth'});
+});
+
+function escapeHtml(str){
+  const d = document.createElement('div');
+  d.textContent = str;
+  return d.innerHTML;
+}
+</script>
+
+</body>
+</html>
