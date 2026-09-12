@@ -133,34 +133,59 @@
     padding:3px 10px;
     margin-left:auto;
   }
-  .rating{
+  .rating-box{
     display:flex;
     flex-direction:row-reverse;
     justify-content:flex-end;
-    gap:6px;
+    gap:2px;
     width:fit-content;
+    background:var(--bg);
+    border:1.5px solid var(--border);
+    border-radius:16px;
+    padding:8px;
   }
-  .rating input{
+  .rating-box input{
     position:absolute;
     opacity:0;
     width:0;height:0;
   }
-  .rating label{
-    font-size:32px;
-    line-height:1;
-    color:var(--border-strong);
+  .star-btn{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:46px;
+    height:46px;
+    border-radius:11px;
     cursor:pointer;
-    transition:color .18s ease, transform .18s ease;
+    transition:background .18s ease, transform .18s ease;
   }
-  .rating label:hover,
-  .rating label:hover ~ label{
-    color:var(--pink);
-    transform:scale(1.15) rotate(-4deg);
+  .star-btn svg{
+    width:24px;
+    height:24px;
+    fill:none;
+    stroke:var(--border-strong);
+    stroke-width:1.6;
+    stroke-linejoin:round;
+    transition:fill .18s ease, stroke .18s ease, transform .18s ease;
   }
-  .rating input:checked ~ label{
-    color:var(--pink);
+  .star-btn:hover,
+  .star-btn:hover ~ .star-btn{
+    background:var(--pink-soft);
   }
-  .rating input:focus-visible ~ label{
+  .star-btn:hover svg,
+  .star-btn:hover ~ .star-btn svg{
+    fill:var(--pink);
+    stroke:var(--pink-deep);
+    transform:scale(1.14) rotate(-6deg);
+  }
+  .rating-box input:checked ~ .star-btn{
+    background:var(--pink-soft);
+  }
+  .rating-box input:checked ~ .star-btn svg{
+    fill:var(--pink);
+    stroke:var(--pink-deep);
+  }
+  .rating-box input:focus-visible ~ .star-btn{
     outline:2px solid var(--pink);
     outline-offset:2px;
   }
@@ -423,12 +448,27 @@
 
       <div class="field">
         <label>Como você avalia o evento anterior?</label>
-        <div class="rating" role="radiogroup" aria-label="Avaliação de 1 a 5 estrelas">
-          <input type="radio" id="star5" name="rating" value="5"><label for="star5" title="5 estrelas">★</label>
-          <input type="radio" id="star4" name="rating" value="4"><label for="star4" title="4 estrelas">★</label>
-          <input type="radio" id="star3" name="rating" value="3"><label for="star3" title="3 estrelas">★</label>
-          <input type="radio" id="star2" name="rating" value="2"><label for="star2" title="2 estrelas">★</label>
-          <input type="radio" id="star1" name="rating" value="1"><label for="star1" title="1 estrela">★</label>
+        <div class="rating-box" role="radiogroup" aria-label="Avaliação de 1 a 5 estrelas">
+          <input type="radio" id="star5" name="rating" value="5">
+          <label for="star5" class="star-btn" title="5 estrelas">
+            <svg viewBox="0 0 24 24"><path d="M12 2 L14.9 8.6 L22 9.3 L16.8 14.1 L18.2 21 L12 17.6 L5.8 21 L7.2 14.1 L2 9.3 L9.1 8.6 Z"/></svg>
+          </label>
+          <input type="radio" id="star4" name="rating" value="4">
+          <label for="star4" class="star-btn" title="4 estrelas">
+            <svg viewBox="0 0 24 24"><path d="M12 2 L14.9 8.6 L22 9.3 L16.8 14.1 L18.2 21 L12 17.6 L5.8 21 L7.2 14.1 L2 9.3 L9.1 8.6 Z"/></svg>
+          </label>
+          <input type="radio" id="star3" name="rating" value="3">
+          <label for="star3" class="star-btn" title="3 estrelas">
+            <svg viewBox="0 0 24 24"><path d="M12 2 L14.9 8.6 L22 9.3 L16.8 14.1 L18.2 21 L12 17.6 L5.8 21 L7.2 14.1 L2 9.3 L9.1 8.6 Z"/></svg>
+          </label>
+          <input type="radio" id="star2" name="rating" value="2">
+          <label for="star2" class="star-btn" title="2 estrelas">
+            <svg viewBox="0 0 24 24"><path d="M12 2 L14.9 8.6 L22 9.3 L16.8 14.1 L18.2 21 L12 17.6 L5.8 21 L7.2 14.1 L2 9.3 L9.1 8.6 Z"/></svg>
+          </label>
+          <input type="radio" id="star1" name="rating" value="1">
+          <label for="star1" class="star-btn" title="1 estrela">
+            <svg viewBox="0 0 24 24"><path d="M12 2 L14.9 8.6 L22 9.3 L16.8 14.1 L18.2 21 L12 17.6 L5.8 21 L7.2 14.1 L2 9.3 L9.1 8.6 Z"/></svg>
+          </label>
         </div>
       </div>
 
