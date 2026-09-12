@@ -313,10 +313,6 @@
           <option>2º semestre</option>
           <option>3º semestre</option>
           <option>4º semestre</option>
-          <option>5º semestre</option>
-          <option>6º semestre</option>
-          <option>7º semestre</option>
-          <option>8º semestre ou mais</option>
         </select>
       </div>
 
@@ -376,6 +372,27 @@
         <textarea id="obs" placeholder="Algo mais que a organização precise saber?"></textarea>
       </div>
     </div>
+
+    <div class="card">
+      <div class="section-num"><span class="n serif">05</span><h2>Sobre o evento anterior</h2><span class="opt-tag">opcional</span></div>
+ 
+      <div class="field">
+        <label>Como você avalia o evento anterior?</label>
+        <div class="rating" role="radiogroup" aria-label="Avaliação de 1 a 5 estrelas">
+          <input type="radio" id="star5" name="rating" value="5"><label for="star5" title="5 estrelas">★</label>
+          <input type="radio" id="star4" name="rating" value="4"><label for="star4" title="4 estrelas">★</label>
+          <input type="radio" id="star3" name="rating" value="3"><label for="star3" title="3 estrelas">★</label>
+          <input type="radio" id="star2" name="rating" value="2"><label for="star2" title="2 estrelas">★</label>
+          <input type="radio" id="star1" name="rating" value="1"><label for="star1" title="1 estrela">★</label>
+        </div>
+      </div>
+ 
+      <div class="field">
+        <label for="sugestaoEvento">O que você gostaria que tivesse no próximo evento?</label>
+        <textarea id="sugestaoEvento" placeholder="Ideias, formatos, temas, estrutura..."></textarea>
+      </div>
+    </div>
+
 
     <div class="submit-row">
       <button type="submit" class="submit">Enviar inscrição</button>
@@ -467,6 +484,9 @@ form.addEventListener('submit', async (e) => {
   const equipamentos = [...document.querySelectorAll('.check-item input:checked')].map(c => c.value);
   const equipOutro = document.getElementById('equipOutro').value.trim();
   const obs = document.getElementById('obs').value.trim();
+  const ratingInput = document.querySelector('input[name="rating"]:checked');
+  const avaliacaoEvento = ratingInput ? ratingInput.value : '';
+  const sugestaoEvento = document.getElementById('sugestaoEvento').value.trim();
 
   const dupInputs = findDuplicateNames();
   if (dupInputs.length > 0){
