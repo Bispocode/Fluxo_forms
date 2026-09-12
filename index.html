@@ -394,6 +394,9 @@
 </main>
 
 <script>
+// Cole aqui a URL do seu Web App do Apps Script (passo 4 do guia)
+const APPS_SCRIPT_URL = "COLE_AQUI_A_URL_DO_SEU_APPS_SCRIPT";
+
 const membersWrap = document.getElementById('membersWrap');
 const memberCount = document.getElementById('memberCount');
 
@@ -494,8 +497,12 @@ form.addEventListener('submit', async (e) => {
 
   savingState.textContent = 'Enviando…';
   try{
-    const key = `submission:${Date.now()}_${Math.random().toString(36).slice(2,8)}`;
-    await window.storage.set(key, JSON.stringify(submission), true);
+    // Content-Type "text/plain" evita o preflight de CORS no Apps Script
+    await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(submission)
+    });
     savingState.textContent = '';
     showSuccess(submission);
   }catch(err){
