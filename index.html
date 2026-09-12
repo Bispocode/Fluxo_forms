@@ -123,6 +123,47 @@
     gap:12px;
     margin-bottom:24px;
   }
+  .opt-tag{
+    font-size:11.5px;
+    font-weight:500;
+    color:var(--muted-2);
+    background:var(--bg);
+    border:1px solid var(--border);
+    border-radius:999px;
+    padding:3px 10px;
+    margin-left:auto;
+  }
+  .rating{
+    display:flex;
+    flex-direction:row-reverse;
+    justify-content:flex-end;
+    gap:6px;
+    width:fit-content;
+  }
+  .rating input{
+    position:absolute;
+    opacity:0;
+    width:0;height:0;
+  }
+  .rating label{
+    font-size:32px;
+    line-height:1;
+    color:var(--border-strong);
+    cursor:pointer;
+    transition:color .18s ease, transform .18s ease;
+  }
+  .rating label:hover,
+  .rating label:hover ~ label{
+    color:var(--pink);
+    transform:scale(1.15) rotate(-4deg);
+  }
+  .rating input:checked ~ label{
+    color:var(--pink);
+  }
+  .rating input:focus-visible ~ label{
+    outline:2px solid var(--pink);
+    outline-offset:2px;
+  }
   .section-num span.n{
     font-family:'Fraunces',serif;
     font-weight:600;
@@ -313,6 +354,10 @@
           <option>2º semestre</option>
           <option>3º semestre</option>
           <option>4º semestre</option>
+          <option>5º semestre</option>
+          <option>6º semestre</option>
+          <option>7º semestre</option>
+          <option>8º semestre ou mais</option>
         </select>
       </div>
 
@@ -375,7 +420,7 @@
 
     <div class="card">
       <div class="section-num"><span class="n serif">05</span><h2>Sobre o evento anterior</h2><span class="opt-tag">opcional</span></div>
- 
+
       <div class="field">
         <label>Como você avalia o evento anterior?</label>
         <div class="rating" role="radiogroup" aria-label="Avaliação de 1 a 5 estrelas">
@@ -386,13 +431,12 @@
           <input type="radio" id="star1" name="rating" value="1"><label for="star1" title="1 estrela">★</label>
         </div>
       </div>
- 
+
       <div class="field">
         <label for="sugestaoEvento">O que você gostaria que tivesse no próximo evento?</label>
         <textarea id="sugestaoEvento" placeholder="Ideias, formatos, temas, estrutura..."></textarea>
       </div>
     </div>
-
 
     <div class="submit-row">
       <button type="submit" class="submit">Enviar inscrição</button>
@@ -412,7 +456,7 @@
 
 <script>
 // Cole aqui a URL do seu Web App do Apps Script (passo 4 do guia)
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxsyEig078r9tYb1qmy_BPnDXNIdhPJpUxjbODT4VIQyF72cdeXGKSlH-02mtKDjiv5/exec";
+const APPS_SCRIPT_URL = "COLE_AQUI_A_URL_DO_SEU_APPS_SCRIPT";
 
 const membersWrap = document.getElementById('membersWrap');
 const memberCount = document.getElementById('memberCount');
@@ -512,6 +556,7 @@ form.addEventListener('submit', async (e) => {
     nome, semestre, descricao,
     integrantes, qtdIntegrantes: integrantes.length,
     equipamentos, equipOutro, contatoNome, contatoInfo: contatoInfoVal, obs,
+    avaliacaoEvento, sugestaoEvento,
     enviadoEm: new Date().toISOString()
   };
 
