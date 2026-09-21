@@ -111,11 +111,14 @@
     border-radius:var(--radius);
     padding:32px;
     margin-bottom:24px;
-    transition:box-shadow .2s ease, border-color .2s ease, transform .2s ease;
+    transition:box-shadow .2s ease, border-color .2s ease, transform .2s ease, opacity .2s ease;
   }
   .card:hover{
     box-shadow:0 8px 28px -14px rgba(23,22,27,0.16);
     border-color:var(--border-strong);
+  }
+  .card.is-hidden{
+    display:none;
   }
   .section-num{
     display:flex;
@@ -439,7 +442,7 @@
       </div>
     </div>
 
-    <div class="card">
+    <div class="card" id="card05">
       <div class="section-num"><span class="n serif">05</span><h2>Sobre o evento anterior</h2><span class="opt-tag">opcional</span></div>
 
       <div class="field">
@@ -529,6 +532,25 @@ contatoInfo.addEventListener('input', () => {
   contatoInfo.value = contatoInfo.value.replace(/\D/g, '');
 });
 
+/* ---------- card 05 só aparece do 2º semestre em diante ---------- */
+const semestreSelect = document.getElementById('semestre');
+const card05 = document.getElementById('card05');
+const ratingBox = document.querySelector('.rating-box');
+const sugestaoEventoField = document.getElementById('sugestaoEvento');
+
+function toggleCard05(){
+  const escondeCard = semestreSelect.value === '' || semestreSelect.value === '1º semestre';
+  card05.classList.toggle('is-hidden', escondeCard);
+  if (escondeCard){
+    // limpa o que já tiver sido preenchido, já que o campo some
+    const checked = document.querySelector('input[name="rating"]:checked');
+    if (checked) checked.checked = false;
+    sugestaoEventoField.value = '';
+  }
+}
+semestreSelect.addEventListener('change', toggleCard05);
+toggleCard05(); // estado inicial (select vazio -> card escondido)
+
 const form = document.getElementById('projectForm');
 const errorMsg = document.getElementById('errorMsg');
 const savingState = document.getElementById('savingState');
@@ -566,7 +588,7 @@ form.addEventListener('submit', async (e) => {
   const obs = document.getElementById('obs').value.trim();
   const ratingInput = document.querySelector('input[name="rating"]:checked');
   const avaliacaoEvento = ratingInput ? ratingInput.value : '';
-  const sugestaoEvento = document.getElementById('sugestaoEvento').value.trim();
+  const sugestaoEvento = sugestaoEventoField.value.trim();
 
   const dupInputs = findDuplicateNames();
   if (dupInputs.length > 0){
@@ -631,6 +653,7 @@ document.getElementById('againBtn').addEventListener('click', () => {
   addMemberRow();
   document.getElementById('successScreen').style.display = 'none';
   form.style.display = 'block';
+  toggleCard05();
   window.scrollTo({top:0, behavior:'smooth'});
 });
 
